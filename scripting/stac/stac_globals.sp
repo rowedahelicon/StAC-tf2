@@ -1,6 +1,7 @@
 #pragma semicolon 1
 // formerly custom defined, now at 101 as of unrestricted_maxplayers update
 #define TFMAXPLAYERS 101
+#define CMD_LENGTH   330
 
 /********** GLOBAL VARS **********/
 // Regex steamidRegex;
@@ -31,6 +32,12 @@ ConVar stac_max_connections_from_ip;
 ConVar stac_work_with_sv_cheats;
 ConVar stac_prevent_connect_spam;
 ConVar stac_print_to_admin_console;
+
+//Temp lilac cvars
+ConVar lilac_loss_fix;
+ConVar lilac_aimlock_light;
+ConVar lilac_aimlock;
+
 
 /***** Server based stuff *****/
 
@@ -81,6 +88,9 @@ int cmdnumSpikeDetects      [TFMAXPLAYERS+1];
 int tbotDetects             [TFMAXPLAYERS+1] = {-1, ...};
 int invalidUsercmdDetects   [TFMAXPLAYERS+1];
 int stacProbingDetects      [TFMAXPLAYERS+1];
+int playerinfo_index        [TFMAXPLAYERS+1];
+int playerinfo_aimlock_sus[TFMAXPLAYERS + 1];
+int playerinfo_aimlock[TFMAXPLAYERS + 1];
 
 // frames since client "did something"
 //                          [ client index ][history]
@@ -88,6 +98,11 @@ float timeSinceSpawn        [TFMAXPLAYERS+1];
 float timeSinceTaunt        [TFMAXPLAYERS+1];
 float timeSinceTeled        [TFMAXPLAYERS+1];
 float timeSinceLastCommand  [TFMAXPLAYERS+1];
+float timeSinceTeleported   [TFMAXPLAYERS + 1];
+float playerinfo_time_usercmd  [TFMAXPLAYERS + 1][CMD_LENGTH];
+float playerinfo_angles [TFMAXPLAYERS + 1][CMD_LENGTH][3];
+float playerinfo_time_aimlock[TFMAXPLAYERS + 1];
+float playerinfo_time_process_aimlock[TFMAXPLAYERS + 1];
 // ticks since client "did something"
 //                          [ client index ][history]
 bool didBangOnFrame         [TFMAXPLAYERS+1][3];

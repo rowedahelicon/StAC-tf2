@@ -72,7 +72,7 @@ char cheatVars[][] =
     // fware
     "crash",
     // cathook uses this to "spoof" windows
-    "windows_speaker_config",
+    // "windows_speaker_config",
     // Amalgam uses this in the Src (https://github.com/rei-2/Amalgam/blob/master/Amalgam/src/Features/Commands/Commands.cpp)
     "getcvar",
 };
@@ -244,7 +244,7 @@ public void ConVarCheck(QueryCookie cookie, int cl, ConVarQueryResult result, co
     {
         int fovDesired = StringToInt(cvarValue);
         // check just in case
-        if (fovDesired < 20 || fovDesired > 90)
+        if (fovDesired < 20 || fovDesired > 160)
         {
             oobVarsNotify(userid, cvarName, cvarValue);
             if (stac_ban_for_misccheats.BoolValue)
@@ -270,19 +270,17 @@ public void ConVarCheck(QueryCookie cookie, int cl, ConVarQueryResult result, co
 
     // cl_thirdperson (hidden cvar! should NEVER not be 0)
     // used for enabling thirdperson
-    else if (StrEqual(cvarName, "cl_thirdperson"))
-    {
-        if (StringToInt(cvarValue) != 0)
-        {
-            oobVarsNotify(userid, cvarName, cvarValue);
-            if (stac_ban_for_misccheats.BoolValue)
-            {
-                oobVarBan(userid);
-            }
-        }
-    }
-
-
+    // else if (StrEqual(cvarName, "cl_thirdperson"))
+    // {
+    //     if (StringToInt(cvarValue) != 0)
+    //     {
+    //         oobVarsNotify(userid, cvarName, cvarValue);
+    //         if (stac_ban_for_misccheats.BoolValue)
+    //         {
+    //             oobVarBan(userid);
+    //         }
+    //     }
+    // }
 
     // DO NOT ban people who are using cheat commands on sv_cheats enabled servers
     static ConVar sv_cheats = null;

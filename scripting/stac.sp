@@ -13,7 +13,7 @@
 #include <regex>
 #include <sdktools>
 #include <sdkhooks>
-#include <tf2_stocks>
+#include <openfortress>
 #include <dhooks>
 
 // hack for unrestricted maxplayers. sorry.
@@ -34,7 +34,7 @@
 #include <connect>
 // SourceTV Manager for reading currently recording demo information: https://forums.alliedmods.net/showthread.php?t=280402
 // Get latest version from here or it will not work: https://github.com/peace-maker/sourcetvmanager/actions
-#include <sourcetvmanager>
+// #include <sourcetvmanager>
 // Conplex for rcon hardening: https://forums.alliedmods.net/showthread.php?t=270962
 // Get latest version from here: https://builds.limetech.io/?p=webcon
 #include <conplex>
@@ -95,6 +95,8 @@ public Plugin myinfo =
 #include "stac/stac_memory.sp"
 // if it ain't broke, don't fix it. jtanz has written a great backtrack patch.
 #include "stac/jay_backtrack_patch.sp"
+// sourced from here: https://github.com/srcdslab/sm-plugin-lilac/blob/master/addons/sourcemod/scripting/lilac/lilac_aimlock.sp
+#include "stac/stac_lilac_aimlock.sp"
 
 /********** PLUGIN LOAD & UNLOAD **********/
 
@@ -141,6 +143,8 @@ public void OnPluginStart()
     // grab player cheevs
     HookEvent("achievement_earned", ePlayerAchievement, EventHookMode_Post);
 
+    HookEvent("player_death", ePlayerDeath, EventHookMode_Pre);
+
     // hook sv_cheats so we can instantly unload if cheats get turned on
     HookConVarChange(FindConVar("sv_cheats"), GenericCvarChanged);
     // hook host_timescale so we don't ban ppl if it's not default
@@ -170,6 +174,8 @@ public void OnPluginStart()
     // create global timer running every couple jiffys for getting all clients' network info
     // This immediately populates the arrays instead of waiting a timer tick
     CreateTimer(0.1, Timer_GetNetInfo, _, TIMER_REPEAT);
+
+    CreateTimer(0.5, timer_check_aimlock, _, TIMER_REPEAT);
 
     SetUpIPConnectLeakyBucket();
 
@@ -312,9 +318,9 @@ void EngineSanityChecks()
 {
     // check if tf2, unload if not
     // strip when sdk13 support
-    if (GetEngineVersion() != Engine_TF2)
+    if (GetEngineVersion() != Engine_SDK2013)
     {
-        SetFailState("[StAC] This plugin is only supported for TF2! Aborting!");
+        SetFailState("[StAC] This plugin is only supported for OF! Aborting!");
     }
 
     if ( MaxClients > 33 || GetMaxHumanPlayers() > 33 )

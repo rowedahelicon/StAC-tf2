@@ -281,6 +281,7 @@ public void OnClientPutInServer(int cl)
         return;
     }
 
+
     // clear per client values
     ClearClBasedVars(userid);
     // clear timer
@@ -506,6 +507,15 @@ public Action ePlayerAchievement(Handle event, char[] name, bool dontBroadcast)
     return Plugin_Continue;
 }
 
+public Action ePlayerDeath(Handle event, char[] name, bool dontBroadcast)
+{
+    int attackerid = GetEventInt(event, "attacker", -1);
+    int client = GetClientOfUserId(attackerid);
+
+    lilac_aimlock_light_test(client);
+    return Plugin_Continue;
+}
+
 // Ignore cmds from unconnected clients
 Action OnAllClientCommands(int cl, const char[] command, int argc)
 {
@@ -597,6 +607,14 @@ void ClearClBasedVars(int userid)
     avgPingFor              [cl] = 0.0;
     rateFor                 [cl] = 0.0;
     ppsFor                  [cl] = 0.0;
+
+    playerinfo_index[cl] = 0;
+    playerinfo_aimlock_sus[cl] = 0;
+    playerinfo_aimlock[cl] = 0;
+    //playerinfo_time_bumpercart[cl] = 0.0;
+    //playerinfo_time_teleported[cl] = 0.0;
+    playerinfo_time_aimlock[cl] = 0.0;
+    playerinfo_time_process_aimlock[cl] = 0.0;
 
     // time since the last stutter/lag spike occurred per client
     timeSinceLagSpikeFor    [cl] = 0.0;

@@ -440,14 +440,14 @@ void BanUser(int userid, char reason[128], char pubreason[256])
 
     int banDuration = stac_ban_duration.IntValue;
 
-    if (stac_include_demoname_in_banreason.BoolValue && SourceTV_IsRecording() && GetDemoName())
-    {
-        char demoname_plus[256];
-        strcopy(demoname_plus, sizeof(demoname_plus), demoname);
-        Format(demoname_plus, sizeof(demoname_plus), ". Demo file: %s", demoname_plus);
-        StrCat(reason, 256, demoname_plus);
-        StacLog("Reason: %s", reason);
-    }
+    // if (stac_include_demoname_in_banreason.BoolValue && SourceTV_IsRecording() && GetDemoName())
+    // {
+    //     char demoname_plus[256];
+    //     strcopy(demoname_plus, sizeof(demoname_plus), demoname);
+    //     Format(demoname_plus, sizeof(demoname_plus), ". Demo file: %s", demoname_plus);
+    //     StrCat(reason, 256, demoname_plus);
+    //     StacLog("Reason: %s", reason);
+    // }
     if (isAuthed)
     {
         if (SOURCEBANS)
@@ -501,12 +501,12 @@ void BanUser(int userid, char reason[128], char pubreason[256])
 
 bool GetDemoName()
 {
-    demotick = SourceTV_GetRecordingTick();
-    if (!SourceTV_GetDemoFileName(demoname, sizeof(demoname)))
-    {
-        demoname = "N/A";
-        return false;
-    }
+    // demotick = SourceTV_GetRecordingTick();
+    // if (!SourceTV_GetDemoFileName(demoname, sizeof(demoname)))
+    // {
+    //     demoname = "N/A";
+    //     return false;
+    // }
 
     return true;
 }

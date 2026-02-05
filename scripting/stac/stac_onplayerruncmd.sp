@@ -98,10 +98,29 @@ public Action OnPlayerRunCmd
         buttons &= ~( IN_LEFT | IN_RIGHT );
     }
 */
+    //lilac
+    if (++playerinfo_index[cl] >= CMD_LENGTH)
+        playerinfo_index[cl] = 0;
+
+    set_player_log_angles(cl, angles, playerinfo_index[cl]);
+
     return Plugin_Continue;
 }
 
+void set_player_log_angles(int client, float ang[3], int tick)
+{
+	int i = tick;
 
+	/* Normalize tick. */
+	while (i < 0)
+		i += CMD_LENGTH;
+	while (i >= CMD_LENGTH)
+		i -= CMD_LENGTH;
+
+	playerinfo_angles[client][i][0] = ang[0];
+	playerinfo_angles[client][i][1] = ang[1];
+	playerinfo_angles[client][i][2] = ang[2];
+}
 
 /*
     void CInput::CreateMove ( int sequence_number, float input_sample_frametime, bool active )
@@ -586,7 +605,8 @@ void cmdnumspikeCheck(int cl)
 
     int spikeamt = clcmdnum[cl][0] - clcmdnum[cl][1];
     // https://github.com/sapphonie/StAC-tf2/issues/74
-    if (spikeamt >= 32 || spikeamt <= -32)
+    //if (spikeamt >= 32 || spikeamt <= -32)
+    if (spikeamt >= 999 || spikeamt < 0)
     {
         int userid = GetClientUserId(cl);
 

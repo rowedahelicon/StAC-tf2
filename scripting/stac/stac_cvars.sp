@@ -395,6 +395,45 @@ void initCvars()
         1.0
     );
 
+    lilac_loss_fix =
+    AutoExecConfig_CreateConVar
+    (
+        "lilac_loss_fix",
+        "1",
+        "Ignore some cheat detections for players who have too much packet loss (bad connection to the server).",
+        FCVAR_NONE,
+        true,
+        0.0,
+        true,
+        1.0
+    );    
+    
+    lilac_aimlock_light =
+    AutoExecConfig_CreateConVar
+    (
+        "lilac_aimlock_light",
+        "1",
+        "Only process at most 5 suspicious players for aimlock.\nDO NOT DISABLE THIS UNLESS YOUR SERVER CAN HANDLE IT!",
+        FCVAR_PROTECTED,
+        true,
+        0.0,
+        true,
+        1.0
+    );    
+    
+    lilac_aimlock =
+    AutoExecConfig_CreateConVar
+    (
+        "lilac_aimlock",
+        "10",
+        "Detect Aimlock.\n0 = Disabled.\n1 = Log only.\n5 or more = ban on n'th detection (Minimum possible is 5).",
+        FCVAR_PROTECTED,
+        true,
+        0.0,
+        false,
+        0.0
+    );
+
     initUsercmdCvars();
     // actually exec the cfg after initing cvars lol
     AutoExecConfig_ExecuteFile();
@@ -453,15 +492,15 @@ void RunOptimizeCvars()
     // SetConVarFloat(FindConVar("sv_maxunlag"), 0.2);
 
     // print dc reasons to clients
-    SetConVarBool(FindConVar("net_disconnect_reason"), true);
+    //SetConVarBool(FindConVar("net_disconnect_reason"), true); //Not in OF
 
     // prevent all sorts of exploits involving CNetChan fuzzing etc.
-    ConVar net_chan_limit_msec = FindConVar("net_chan_limit_msec");
-    // don't override server set settings if they have set it to a value other than 0
-    if (GetConVarInt(net_chan_limit_msec) <= 0)
-    {
-        SetConVarInt(net_chan_limit_msec, 128);
-    }
+    // ConVar net_chan_limit_msec = FindConVar("net_chan_limit_msec");
+    // // don't override server set settings if they have set it to a value other than 0
+    // if (GetConVarInt(net_chan_limit_msec) <= 0)
+    // {
+    //     SetConVarInt(net_chan_limit_msec, 128);
+    // }
 
     if (isDefaultTickrate())
     {
